@@ -15,6 +15,7 @@ package ee.gunk.internals
 		public function InstanceProvider(dependencyInjector:IDependencyInjector, instance:Object)
 		{
 			_instance = instance;
+			_dependencyInjector = dependencyInjector;
 		}
 		
 		public function get():Object

@@ -2,6 +2,8 @@ package ee.gunk.binder
 {
 	/**
 	 * The binding builder to created annotated bindings
+	 * 
+	 * @see ee.gunk.IBinder
 	 */
 	public interface IAnnotatedBindingBuilder extends ILinkedBindingBuilder
 	{

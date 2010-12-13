@@ -47,7 +47,7 @@ package ee.gunk.internals
 		
 		public function bindKey(key:IKey):ILinkedBindingBuilder
 		{
-			return new SignatureBindingBuilder(_bindings, _dependencyInjector, _annotationRegistry, key);
+			return new KeyBindingBuilder(_bindings, _dependencyInjector, _annotationRegistry, key);
 		}
 		
 		public function bindAnnotationFactory(annotationType:Class, annotationFactory:IAnnotationFactory):void

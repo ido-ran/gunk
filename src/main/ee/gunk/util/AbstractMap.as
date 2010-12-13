@@ -6,7 +6,10 @@ package ee.gunk.util
 	import flash.utils.IDataOutput;
 	import flash.utils.IExternalizable;
 
-	public class AbstractMap implements IMap, IExternalizable
+	/**
+	 * @private
+	 */
+	internal class AbstractMap implements IMap, IExternalizable
 	{
 		protected var store:Object;
 		private var _keys:Vector.<Object>;
@@ -14,6 +17,8 @@ package ee.gunk.util
 		
 		public function AbstractMap()
 		{
+			assertAbstract(this, AbstractMap);
+			
 			store = createStore();
 			_keys = new Vector.<Object>();
 		}

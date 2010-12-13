@@ -42,7 +42,7 @@ package ee.gunk
 		public var t12:InjectorTest;		
 		
 		//di
-		public var t14:SignatureTest;
+		public var t14:KeyTest;
 		
 		//features
 		public var t15:ConstructorInjectionTest;

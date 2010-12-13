@@ -1,0 +1,164 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><!-- saved from url=(0014)about:internet --><html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><link rel="stylesheet" href="../../style.css" type="text/css" media="screen"><link rel="stylesheet" href="../../print.css" type="text/css" media="print"><link rel="stylesheet" href="../../override.css" type="text/css"><meta name="keywords" content="IBinder,ee.gunk.IBinder,bind,bind,bindAnnotationFactory,bindKey,bindKey,configure,configureWithBinder,configureWithBinder,createInjector,get,get,getFor,getInstance,getProvider,getProviderFor,injectDependencies,install,install,scope,scope,toString,toString,toString"><title>ee.gunk.IBinder</title></head><body><script language="javascript" type="text/javascript" src="../../asdoc.js"></script><script language="javascript" type="text/javascript" src="../../help.js"></script><script language="javascript" type="text/javascript" src="../../cookies.js"></script><script language="javascript" type="text/javascript"><!--
+				asdocTitle = 'IBinder - API Documentation';
+				var baseRef = '../../';
+				window.onload = configPage;
+			--></script>
+<script type="text/javascript">
+			scrollToNameAnchor();
+		</script><table class="titleTable" cellpadding="0" cellspacing="0" id="titleTable" style="display:none"><tr><td class="titleTableTitle" align="left">API Documentation</td><td class="titleTableTopNav" align="right"><a href="../../package-summary.html" onclick="loadClassListFrame('../../all-classes.html')">All Packages</a>&nbsp;|&nbsp;<a href="../../class-summary.html" onclick="loadClassListFrame('../../all-classes.html')">All Classes</a>&nbsp;|&nbsp;<a href="../../all-index-A.html" onclick="loadClassListFrame('../../index-list.html')">Index</a>&nbsp;|&nbsp;<a id="framesLink1" href="../../index.html?ee/gunk/IBinder.html&amp;ee/gunk/class-list.html">Frames</a><a id="noFramesLink1" style="display:none" href="" onclick="parent.location=document.location"> No Frames </a></td><td class="titleTableLogo" align="right" rowspan="3"><img src="../../images/logo.jpg" class="logoImage" alt=" Adobe Logo " title=" Adobe Logo "></td></tr><tr class="titleTableRow2"><td class="titleTableSubTitle" id="subTitle" align="left">IBinder</td><td class="titleTableSubNav" id="subNav" align="right"><a href="#methodSummary">Methods</a></td></tr><tr class="titleTableRow3"><td colspan="3">&nbsp;</td></tr></table><script language="javascript" type="text/javascript" xml:space="preserve">
+				<!--
+				
+					if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("IBinder"); titleBar_setSubNav(false,false,false,false,false,false,false,false,true,false,false	,false,false,false,false,false);}	
+				-->
+			</script><div xmlns:fn="http://www.w3.org/2005/xpath-functions" class="MainContent"><table class="classHeaderTable" cellpadding="0" cellspacing="0"><tr><td class="classHeaderTableLabel">Package</td><td><a href="package-detail.html" onclick="javascript:loadClassListFrame('class-list.html')">ee.gunk</a></td></tr><tr><td class="classHeaderTableLabel">Interface</td><td class="classSignature">public  interface  IBinder</td></tr></table><p></p><p></p><p></p>
+	 Documentation below is copied from Guice's Binder interface and modified to 
+	 reflect the way Gunk works.
+	 
+	 Collects configuration information (primarily <i>bindings</i>) which will be
+	 used to create an IInjector. Gunk provides this object to your
+	 application's IModule implementors so they may each contribute
+	 their own bindings and other registrations.
+	 
+	 
+	 
+	 Gunk uses an <i>embedded domain-specific language</i>, or EDSL, to help you
+	 create bindings simply and readably.  This approach is great for overall
+	 usability, but it does come with a small cost: <b>it is difficult to
+	 learn how to use the Binding EDSL by reading
+	 method-level asdocs</b>.  Instead, you should consult the series of
+	 examples below.  To save space, these examples omit the opening
+	 <code>binder</code>, just as you will if your module extends
+	 AbstractModule.
+	 
+	 <div class="listing"><pre>
+         bind(ServiceImpl);
+     </pre></div>
+	 
+	 This statement does essentially nothing; it "binds the <code>ServiceImpl</code>
+	 class to itself" and does not change Gunk's default behavior.  You may still
+	 want to use this if you prefer your IModule class to serve as an
+	 explicit <i>manifest</i> for the services it provides.  Also, in rare cases,
+	 Gunk may be unable to validate a binding at injector creation time unless it
+	 is given explicitly.
+	 
+	 <div class="listing"><pre>
+         bind(Service).to(ServiceImpl);
+     </pre></div>
+	 
+	 Specifies that a request for a <code>Service</code> instance with no binding
+	 annotations should be treated as if it were a request for a
+	 <code>ServiceImpl</code> instance. This <i>overrides</i> the function of any
+	 [ImplementedBy] or [ProvidedBy]
+	 annotations found on <code>Service</code>, since Gunk will have already
+	 "moved on" to <code>ServiceImpl</code> before it reaches the point when it starts
+	 looking for these annotations.
+	 
+	 <div class="listing"><pre>
+         bind(Service).toProvider(ServiceProvider);
+     </pre></div>
+	 
+	 In this example, <code>ServiceProvider</code> must extend or implement
+	 <code>IProvider</code>. This binding specifies that Gunk should resolve
+	 an unannotated injection request for <code>Service</code> by first resolving an
+	 instance of <code>ServiceProvider</code> in the regular way, then calling
+	 <code>get()</code> on the resulting Provider instance to obtain the
+	 <code>Service</code> instance.
+	 
+	 <p>The IProvider you use here does not have to be a "factory"; that
+	 is, a provider which always <i>creates</i> each instance it provides.
+	 However, this is generally a good practice to follow.  You can then use
+	 Gunk's concept of scopes to guide when creation should happen
+	 -- "letting Gunk work for you".</p>
+	 
+	              <div class="listing"><pre>
+         bind(Service).annotatedWith(Red).to(ServiceImpl);
+     </pre></div>
+	 
+	 Like the previous example, but only applies to injection requests that use
+	 the binding annotation <code>[Red]</code>.  If your module also includes bindings
+	 for particular <i>values</i> of the <code>[Red]</code> annotation (see below),
+	 then this binding will serve as a "catch-all" for any values of <code>[Red]</code>
+	 that have no exact match in the bindings.
+	 
+	 <div class="listing"><pre>
+         bind(ServiceImpl).inScope(Scopes.SINGLETON);
+         // or, alternatively
+         bind(ServiceImpl).asSingleton();
+     </pre></div>
+	 
+	 Either of these statements places the <code>ServiceImpl</code> class into
+	 singleton scope.  Gunk will create only one instance of <code>ServiceImpl</code>
+	 and will reuse it for all injection requests of this type.  Note that it is
+	 still possible to bind another instance of <code>ServiceImpl</code> if the second
+	 binding is qualified by an annotation as in the previous example.  Gunk is
+	 not overly concerned with <i>preventing</i> you from creating multiple
+	 instances of your "singletons", only with <i>enabling</i> your application to
+	 share only one instance if that's all you tell Gunk you need.
+	 
+	 <p>
+                  <b>Note:</b> a scope specified in this way <i>overrides</i> any scope that
+	 was specified with an annotation on the <code>ServiceImpl</code> class.</p>
+	 
+	              <div class="listing"><pre>
+         bind(Service).toInstance(new ServiceImpl());
+         // or, alternatively
+         bind(Service).toInstance(SomeLegacyRegistry.getService());
+     </pre></div>
+	 
+	 In this example, your module itself, <i>not Gunk</i>, takes responsibility
+	 for obtaining a <code>ServiceImpl</code> instance, then asks Gunk to always use
+	 this single instance to fulfill all <code>Service</code> injection requests.  When
+	 the Injector is created, it will automatically perform field
+	 and method injection for this instance, but any injectable constructor on
+	 <code>ServiceImpl</code> is simply ignored.  
+	 
+	 <div class="listing"><pre>
+         bind(Service)
+             .annotatedWith(Names.named("blue"))
+             .to(BlueService);
+     </pre></div>
+	 
+	 Differentiating by names is a common enough use case that we provided a
+	 standard annotation, [Named].  Remember that these
+	 names will live in a single flat namespace with all the other names used in
+	 your application.
+	 
+	 <p>The above list of examples is far from exhaustive.  If you can think of
+	 how the concepts of one example might coexist with the concepts from another,
+	 you can most likely weave the two together.  If the two concepts make no
+	 sense with each other, you most likely won't be able to do it.  In a few
+	 cases Gunk will let something bogus slip by, and will then inform you of
+	 the problems at runtime, as soon as you try to create your Injector.</p>
+	 
+	              <p>The other methods of Binder such as bindAnnotationFactory and install 
+	 are not part of the Binding EDSL; you can learn how to use these in the 
+	 usual way, from the method documentation.</p>
+	 
+	           <p></p><p><span class="classHeaderTableLabel">See also</span></p><div class="seeAlso"><a href="IInjector.html" target="">ee.gunk.IInjector</a><br/><a href="IModule.html" target="">ee.gunk.IModule</a><br/><a href="AbstractModule.html" target="">ee.gunk.AbstractModule</a><br/><a href="IProvider.html" target="">ee.gunk.IProvider</a><br/>ee.gunk.Scope</div><br/><hr></div><a name="methodSummary"></a><div class="summarySection"><div class="summaryTableTitle">Public Methods </div><table cellspacing="0" cellpadding="3" class="summaryTable " id="summaryTableMethod"><tr><th>&nbsp;</th><th colspan="2">Method</th><th class="summaryTableOwnerCol">Defined By</th></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="#bind()" class="signatureLink">bind</a>(type:Class):<a href="../../ee/gunk/binder/IAnnotatedBindingBuilder.html">IAnnotatedBindingBuilder</a></div><div class="summaryTableDescription">
+		 Binds a type
+		 </div></td><td class="summaryTableOwnerCol">IBinder</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="#bindAnnotationFactory()" class="signatureLink">bindAnnotationFactory</a>(annotationType:Class, annotationFactory:<a href="../../ee/gunk/annotation/IAnnotationFactory.html">IAnnotationFactory</a>):void</div><div class="summaryTableDescription">
+		 Binds an annotation factory.</div></td><td class="summaryTableOwnerCol">IBinder</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="#bindKey()" class="signatureLink">bindKey</a>(key:<a href="../../ee/gunk/IKey.html">IKey</a>):<a href="../../ee/gunk/binder/ILinkedBindingBuilder.html">ILinkedBindingBuilder</a></div><div class="summaryTableDescription">
+		 Binds a key
+		 </div></td><td class="summaryTableOwnerCol">IBinder</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="#install()" class="signatureLink">install</a>(module:<a href="../../ee/gunk/IModule.html">IModule</a>):void</div><div class="summaryTableDescription">
+		 Use the given module to install bindings.</div></td><td class="summaryTableOwnerCol">IBinder</td></tr></table></div><script language="javascript" type="text/javascript"><!--
+										showHideInherited();
+										--></script><div class="MainContent"><a name="methodDetail"></a><div class="detailSectionHeader">Method Detail</div><a name="bind()"></a><a name="bind(Class)"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">bind</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td></tr></table><div class="detailBody"><code> public function bind(type:Class):<a href="../../ee/gunk/binder/IAnnotatedBindingBuilder.html">IAnnotatedBindingBuilder</a></code><p></p><p></p><p>
+		 Binds a type
+		 </p><p><span class="label"> Parameters </span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20px"></td><td><code><span class="label">type</span>:Class</code></td></tr></table></p><p></p><span class="label">Returns</span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20"></td><td><code><a href="../../ee/gunk/binder/IAnnotatedBindingBuilder.html">IAnnotatedBindingBuilder</a></code></td></tr></table></div><a name="bindAnnotationFactory()"></a><a name="bindAnnotationFactory(Class,ee.gunk.annotation.IAnnotationFactory)"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">bindAnnotationFactory</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code> public function bindAnnotationFactory(annotationType:Class, annotationFactory:<a href="../../ee/gunk/annotation/IAnnotationFactory.html">IAnnotationFactory</a>):void</code><p></p><p></p><p>
+		 Binds an annotation factory. This could be necessary for more complext annotations.
+		 <p></p>
+		 By default an internal annotation factory is used. If a construction with metadata 
+		 is requested it will use one of the following signatures based on the number of 
+		 arguments in the constructor:
+		 
+		 <div class="listing"><pre>
+             new Annotation();
+             new Annotation(annotationMetadata.defaultValue);
+             new Annotation(annotationMetadata.defaultValue, annotationMetadata.values);
+         </pre></div>
+		 
+		 </p><p><span class="label"> Parameters </span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20px"></td><td><code><span class="label">annotationType</span>:Class</code></td></tr><tr><td class="paramSpacer">&nbsp;</td></tr><tr><td width="20px"></td><td><code><span class="label">annotationFactory</span>:<a href="../../ee/gunk/annotation/IAnnotationFactory.html">IAnnotationFactory</a></code></td></tr></table></p><p><span class="label">See also</span></p><div class="seeAlso"><a href="../../ee/gunk/metadata/AnnotationMetadata.html" target="">ee.gunk.metadata.AnnotationMetadata</a></div></div><a name="bindKey()"></a><a name="bindKey(ee.gunk.IKey)"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">bindKey</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code> public function bindKey(key:<a href="../../ee/gunk/IKey.html">IKey</a>):<a href="../../ee/gunk/binder/ILinkedBindingBuilder.html">ILinkedBindingBuilder</a></code><p></p><p></p><p>
+		 Binds a key
+		 </p><p><span class="label"> Parameters </span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20px"></td><td><code><span class="label">key</span>:<a href="../../ee/gunk/IKey.html">IKey</a></code></td></tr></table></p><p></p><span class="label">Returns</span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20"></td><td><code><a href="../../ee/gunk/binder/ILinkedBindingBuilder.html">ILinkedBindingBuilder</a></code></td></tr></table></div><a name="install()"></a><a name="install(ee.gunk.IModule)"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">install</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code> public function install(module:<a href="../../ee/gunk/IModule.html">IModule</a>):void</code><p></p><p></p><p>
+		 Use the given module to install bindings.
+		 </p><p><span class="label"> Parameters </span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20px"></td><td><code><span class="label">module</span>:<a href="../../ee/gunk/IModule.html">IModule</a></code></td></tr></table></p></div><br/><br/><hr><br/><p></p><center class="copyright"><footer></footer><br/>maandag december 13 2010, 10:36 N.M. +01:00  </center></div></body></html><!--<br/>maandag december 13 2010, 10:36 N.M. +01:00  -->

@@ -3,6 +3,9 @@ package ee.gunk.internals
 	import ee.gunk.IKey;
 	import ee.gunk.IProvider;
 
+	/**
+	 * @private
+	 */
 	internal class InternalFactoryWrapper implements IProvider
 	{
 		private var _internalFactory:IInternalFactory;

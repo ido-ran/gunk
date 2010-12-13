@@ -1,5 +1,8 @@
 package ee.gunk.internals
 {
+	/**
+	 * @private
+	 */
 	internal class AnnotationNames
 	{
 		static public const INJECT:String = "Inject";

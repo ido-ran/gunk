@@ -4,6 +4,10 @@ package ee.gunk.metadata
 	
 	import flash.utils.describeType;
 
+	/**
+	 * Only constructs metadata for types that have annotations. If a member of the class 
+	 * has no annotations no metadata will be generated
+	 */
 	public class ClassMetadataFactory implements IClassMetadataFactory
 	{
 		private var _constructorMetadataBuilder:ConstructorMetadataBuilder;

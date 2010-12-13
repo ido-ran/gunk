@@ -3,6 +3,9 @@ package ee.gunk.internals
 	import ee.gunk.IKey;
 	import ee.gunk.IProvider;
 	
+	/**
+	 * @private
+	 */
 	internal final class MethodProvider implements IProvider
 	{
 		private var _dependencyInjector:IDependencyInjector;

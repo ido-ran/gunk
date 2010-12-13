@@ -4,6 +4,9 @@ package ee.gunk.internals
 	import ee.gunk.annotation.IAnnotation;
 	import ee.gunk.metadata.MethodMetadata;
 
+	/**
+	 * @private
+	 */
 	internal interface IDependencyFactory
 	{
 		function createDependency(type:Class, annotations:Vector.<IAnnotation>):IKey;

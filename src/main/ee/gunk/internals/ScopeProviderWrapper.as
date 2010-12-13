@@ -4,6 +4,9 @@ package ee.gunk.internals
 	import ee.gunk.IKeyAwareProvider;
 	import ee.gunk.IProvider;
 
+	/**
+	 * @private
+	 */
 	internal class ScopeProviderWrapper implements IKeyAwareProvider
 	{
 		private var _scopeProvider:IProvider;

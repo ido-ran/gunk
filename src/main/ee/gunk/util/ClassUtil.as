@@ -6,6 +6,9 @@ package ee.gunk.util
 
 	public class ClassUtil
 	{
+		/**
+		 * Constructs an instance of the given type with up to 9 constructor arguments
+		 */
 		static public function createInstance(type:Class, constructorArguments:Vector.<Object>):Object
 		{
 			var a:Vector.<Object> = constructorArguments;
@@ -37,6 +40,9 @@ package ee.gunk.util
 			}
 		}
 		
+		/**
+		 * Retrieves the class of a given instance, ignoring reference errors.
+		 */
 		static public function getClass(instance:Object):Class
 		{
 			try

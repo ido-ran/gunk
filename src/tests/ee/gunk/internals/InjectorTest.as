@@ -12,7 +12,6 @@ package ee.gunk.internals
 	public class InjectorTest
 	{		
 		private var _ar:AnnotationRegistryStub;
-		private var _df:DependencyFactoryStub;
 		private var _cmf:ClassMetadataFactory;
 		private var _m:Array;
 		private var _tm:TestModule;
@@ -22,7 +21,6 @@ package ee.gunk.internals
 		{
 			_ar = new AnnotationRegistryStub();
 			_cmf = new ClassMetadataFactory();
-			_df = new DependencyFactoryStub();
 			_tm = new TestModule();
 			_m = [_tm];
 		}
@@ -32,7 +30,6 @@ package ee.gunk.internals
 		{
 			_ar = null;
 			_cmf = null;
-			_df = null;
 			_tm = null;
 			_m = null;
 		}
@@ -40,14 +37,14 @@ package ee.gunk.internals
 		[Test]
 		public function testInjector():void
 		{
-			new Injector(_ar, _cmf, _df, _m);
+			new Injector(_ar, _cmf, _m);
 			assertThat(_tm.binder, notNullValue());
 		}
 		
 		[Test]
 		public function testGetInstance():void
 		{
-			var i:Injector = new Injector(_ar, _cmf, _df, _m);
+			var i:Injector = new Injector(_ar, _cmf, _m);
 			var o:Object = i.getInstance(TestType1);
 			assertThat(o, notNullValue());
 		}
@@ -55,7 +52,7 @@ package ee.gunk.internals
 		[Test]
 		public function testGetProvider():void
 		{
-			var i:Injector = new Injector(_ar, _cmf, _df, _m);
+			var i:Injector = new Injector(_ar, _cmf, _m);
 			var o:IProvider = i.getProvider(TestType1);
 			assertThat(o, notNullValue());
 		}
@@ -63,7 +60,7 @@ package ee.gunk.internals
 		[Test]
 		public function testGetProviderFor():void
 		{
-			var i:Injector = new Injector(_ar, _cmf, _df, _m);
+			var i:Injector = new Injector(_ar, _cmf, _m);
 			var o:IProvider = i.getProviderFor(new Key(TestType1, null));
 			assertThat(o, notNullValue());
 		}
@@ -71,7 +68,7 @@ package ee.gunk.internals
 		[Test]
 		public function testInjectDependencies():void
 		{
-			var i:Injector = new Injector(_ar, _cmf, _df, _m);
+			var i:Injector = new Injector(_ar, _cmf, _m);
 			i.injectDependencies(new TestType1());
 		}
 	}

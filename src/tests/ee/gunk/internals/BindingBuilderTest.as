@@ -61,7 +61,7 @@ package ee.gunk.internals
 		}
 		
 		[Test]
-		public function testBindingBuilder_untargettedSignature():void
+		public function testBindingBuilder_untargettedKey():void
 		{
 			new BindingBuilder(_b, _di, _ar, TestType1);
 			assertThat(_b[0].key, notNullValue());

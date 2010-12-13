@@ -14,20 +14,18 @@ package ee.gunk.internals
 	 */
 	internal final class Injector implements IInjector
 	{
-		private var _annotationRegistry:IAnnotationRegistry;
-		
 		private var _dependencyInjector:IDependencyInjector;
 		private var _bindingRegistry:IBindingRegistry;
 		private var _binder:IInternalBinder;
 		
-		public function Injector(annotationRegistry:IAnnotationRegistry, classMetadataFactory:IClassMetadataFactory, dependencyFactory:IDependencyFactory, modules:Array)
+		public function Injector(annotationRegistry:IAnnotationRegistry, classMetadataFactory:IClassMetadataFactory, modules:Array)
 		{
-			_annotationRegistry = annotationRegistry;
+			var dependencyFactory:DependencyFactory = new DependencyFactory(annotationRegistry, classMetadataFactory);
 			
 			_dependencyInjector = new DependencyInjector(this, dependencyFactory);
 			_binder = new Binder(_dependencyInjector, annotationRegistry, classMetadataFactory, dependencyFactory);
 			
-			_binder.install(new DIModule(this));
+			_binder.install(new GunkModule(this));
 			_configureModules(modules);
 		}
 		

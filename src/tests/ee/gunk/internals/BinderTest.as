@@ -46,7 +46,7 @@ package ee.gunk.internals
 		}
 		
 		[Test]
-		public function testBindSignature():void
+		public function testBindKey():void
 		{
 			var b:ILinkedBindingBuilder = _b.bindKey(new Key(TestType1));
 			assertThat(b, notNullValue());

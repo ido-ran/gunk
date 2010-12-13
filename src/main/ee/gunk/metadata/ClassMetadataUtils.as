@@ -6,8 +6,6 @@ package ee.gunk.metadata
 	import flash.utils.describeType;
 	import flash.utils.getDefinitionByName;
 	
-	import org.hamcrest.text.containsString;
-
 	public class ClassMetadataUtils
 	{
 		static private var _annotationMetadataBuilder:IAnnotationMetadataBuilder = new AnnotationMetadataBuilder();

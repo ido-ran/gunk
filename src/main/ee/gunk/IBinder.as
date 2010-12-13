@@ -62,7 +62,7 @@ package ee.gunk
 	 * is, a provider which always <i>creates</i> each instance it provides.
 	 * However, this is generally a good practice to follow.  You can then use
 	 * Gunk's concept of scopes to guide when creation should happen
-	 * -- "letting Gunk work for you".
+	 * -- "letting Gunk work for you".</p>
 	 *
 	 * <listing>
 	 *     bind(Service).annotatedWith(Red).to(ServiceImpl);
@@ -90,7 +90,7 @@ package ee.gunk
 	 * share only one instance if that's all you tell Gunk you need.
 	 *
 	 * <p><b>Note:</b> a scope specified in this way <i>overrides</i> any scope that
-	 * was specified with an annotation on the <code>ServiceImpl</code> class.
+	 * was specified with an annotation on the <code>ServiceImpl</code> class.</p>
 	 * 
 	 * <listing>
 	 *     bind(Service).toInstance(new ServiceImpl());
@@ -121,11 +121,11 @@ package ee.gunk
 	 * you can most likely weave the two together.  If the two concepts make no
 	 * sense with each other, you most likely won't be able to do it.  In a few
 	 * cases Gunk will let something bogus slip by, and will then inform you of
-	 * the problems at runtime, as soon as you try to create your Injector.
+	 * the problems at runtime, as soon as you try to create your Injector.</p>
 	 *
 	 * <p>The other methods of Binder such as bindAnnotationFactory and install 
 	 * are not part of the Binding EDSL; you can learn how to use these in the 
-	 * usual way, from the method documentation.
+	 * usual way, from the method documentation.</p>
 	 *
 	 * @author crazybob@google.com (Bob Lee)
 	 * @author jessewilson@google.com (Jesse Wilson)
