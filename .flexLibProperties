@@ -12,6 +12,7 @@
     <classEntry path="ee.gunk.IProvider"/>
     <classEntry path="ee.gunk.IScope"/>
     <classEntry path="ee.gunk.Key"/>
+    <classEntry path="ee.gunk.Scopes"/>
     <classEntry path="ee.gunk.Singleton"/>
     <classEntry path="ee.gunk.annotation.AbstractAnnotation"/>
     <classEntry path="ee.gunk.annotation.IAnnotation"/>
