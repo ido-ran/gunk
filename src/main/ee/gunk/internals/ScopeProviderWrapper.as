@@ -13,6 +13,10 @@ package ee.gunk.internals
 		
 		public function ScopeProviderWrapper(scopeProvider:IProvider)
 		{
+			if (!scopeProvider)
+			{
+				throw new Error("scopeProvider cannot be null");
+			}
 			_scopeProvider = scopeProvider;
 		}
 		
